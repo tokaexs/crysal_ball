@@ -1,0 +1,26 @@
+{
+  "discount_10pct": {
+    "n_treated_arm": 394,
+    "raw_churn_rate_treated_arm": 0.03553299492385787,
+    "raw_churn_rate_control_arm": 0.06281407035175879,
+    "mean_ite_estimate_on_control_population": 0.0796
+  },
+  "free_upgrade_3mo": {
+    "n_treated_arm": 390,
+    "raw_churn_rate_treated_arm": 0.017948717948717947,
+    "raw_churn_rate_control_arm": 0.06281407035175879,
+    "mean_ite_estimate_on_control_population": 0.1428
+  },
+  "account_manager_call": {
+    "n_treated_arm": 361,
+    "raw_churn_rate_treated_arm": 0.0332409972299169,
+    "raw_churn_rate_control_arm": 0.06281407035175879,
+    "mean_ite_estimate_on_control_population": 0.1034
+  },
+  "loyalty_bonus": {
+    "n_treated_arm": 384,
+    "raw_churn_rate_treated_arm": 0.026041666666666668,
+    "raw_churn_rate_control_arm": 0.06281407035175879,
+    "mean_ite_estimate_on_control_population": 0.1257
+  }
+}

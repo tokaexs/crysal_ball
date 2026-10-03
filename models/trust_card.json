@@ -1,0 +1,15 @@
+{
+  "churn_auc": 0.6449338613567116,
+  "churn_base_rate": 0.016469902346596708,
+  "revenue_mape": 0.006178228842242432,
+  "revenue_rmse": 19.747724747280913,
+  "pi_coverage_90": 0.9068921043797813,
+  "drift": {
+    "feature_monitored": "revenue",
+    "psi": 0.0024,
+    "ks_statistic": 0.0148,
+    "ks_p_value": 0.002,
+    "alert_level": "green",
+    "retrain_triggered": false
+  }
+}

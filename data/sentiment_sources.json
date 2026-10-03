@@ -1,0 +1,76 @@
+{
+  "_meta": {
+    "description": "Curated, paraphrased statements reflecting public customer sentiment and feedback patterns across major OTT platforms in India.",
+    "methodology": "Hand-compiled paraphrases of public review patterns, news coverage, and social discussions. Evaluated using VADER sentiment analysis."
+  },
+  "companies": {
+    "netflix": [
+      {
+        "aspect": "pricing",
+        "text": "The monthly subscription price is quite expensive compared to other streaming options in India.",
+        "source": "India tech press / user discussions (2026)"
+      },
+      {
+        "aspect": "content_variety",
+        "text": "Great library of international shows, high production value originals, and smooth recommendation algorithms.",
+        "source": "App Store review themes (2026)"
+      },
+      {
+        "aspect": "streaming_quality",
+        "text": "Excellent 4K streaming performance with no buffering and reliable offline downloads on all devices.",
+        "source": "Public feedback (2026)"
+      }
+    ],
+    "jiohotstar": [
+      {
+        "aspect": "live_sports",
+        "text": "Unmatched live cricket and sports coverage, essential for following major tournaments and matches in India.",
+        "source": "Official sports release / user feedback (2026)"
+      },
+      {
+        "aspect": "ads",
+        "text": "Disappointing to see ads shown even on paid premium plans during live matches and shows.",
+        "source": "User discussions / tech forums (2026)"
+      },
+      {
+        "aspect": "streaming_quality",
+        "text": "Occasional stream stuttering and server overload during high-traffic cricket finals.",
+        "source": "Public feedback (2026)"
+      }
+    ],
+    "prime_video": [
+      {
+        "aspect": "pricing",
+        "text": "Great value bundle combined with Amazon Prime shopping delivery and Amazon Music benefits.",
+        "source": "Public consumer feedback (2026)"
+      },
+      {
+        "aspect": "ads",
+        "text": "Frustrating introduction of ads in content unless paying an extra surcharge on top of prime membership.",
+        "source": "Tech news coverage (2026)"
+      },
+      {
+        "aspect": "ui_experience",
+        "text": "The user interface can feel cluttered and mixes included content with rent or purchase titles.",
+        "source": "User interface feedback (2026)"
+      }
+    ],
+    "youtube_premium": [
+      {
+        "aspect": "ads",
+        "text": "Completely ad-free YouTube experience across web and TV with background playback on mobile is fantastic.",
+        "source": "User reviews (2026)"
+      },
+      {
+        "aspect": "pricing",
+        "text": "Recent price hikes make the family plan significantly more costly than before.",
+        "source": "Press reports (2026)"
+      },
+      {
+        "aspect": "content_variety",
+        "text": "Unbeatable infinite catalog of creator content, podcasts, tutorials, and YouTube Music included.",
+        "source": "Public feedback (2026)"
+      }
+    ]
+  }
+}

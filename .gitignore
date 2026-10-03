@@ -1,0 +1,28 @@
+# Environment variables and secrets
+.env
+.env.local
+*.env
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+env/
+
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# OS / Editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Duckdb temp / lock files (keep warehouse.duckdb if desired or ignore logs)
+*.duckdb.tmp
+*.duckdb.wal
