@@ -4,7 +4,13 @@ Run with: streamlit run dashboard/app.py
 """
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+from dotenv import find_dotenv, load_dotenv
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env", override=True)
+load_dotenv(find_dotenv(usecwd=True), override=True)
+
+sys.path.insert(0, str(BASE_DIR / "src"))
 
 import json
 import joblib

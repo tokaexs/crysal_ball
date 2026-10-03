@@ -22,17 +22,34 @@ OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 
 def _get_api_info():
-    # 1. Check local .env files in project root, CWD, and parent paths
-    root_env = Path(__file__).resolve().parent.parent / ".env"
-    cwd_env = Path.cwd() / ".env"
-    if root_env.exists():
-        load_dotenv(root_env, override=True)
-    if cwd_env.exists() and cwd_env != root_env:
-        load_dotenv(cwd_env, override=True)
-    load_dotenv(find_dotenv(usecwd=True), override=True)
-
     anthropic_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     openrouter_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
+    openrouter_model = os.environ.get("OPENROUTER_MODEL", "openai/gpt-4o-mini").strip()
+
+    # 1. Check local .env files via standard file reading (zero-dependency foolproof)
+    candidate_paths = [
+        Path(__file__).resolve().parent.parent / ".env",
+        Path.cwd() / ".env",
+        Path(__file__).resolve().parent / ".env",
+    ]
+    for env_file in candidate_paths:
+        if env_file.exists():
+            try:
+                with open(env_file, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line or line.startswith("#") or "=" not in line:
+                            continue
+                        k, v = line.split("=", 1)
+                        k, v = k.strip(), v.strip().strip("'\"")
+                        if k == "OPENROUTER_API_KEY" and not openrouter_key:
+                            openrouter_key = v
+                        elif k == "ANTHROPIC_API_KEY" and not anthropic_key:
+                            anthropic_key = v
+                        elif k == "OPENROUTER_MODEL" and v:
+                            openrouter_model = v
+            except Exception:
+                pass
 
     # 2. Check Streamlit Secrets (for local Streamlit or Streamlit Community Cloud)
     try:
@@ -42,6 +59,8 @@ def _get_api_info():
                 openrouter_key = str(st.secrets["OPENROUTER_API_KEY"]).strip()
             if "ANTHROPIC_API_KEY" in st.secrets and not anthropic_key:
                 anthropic_key = str(st.secrets["ANTHROPIC_API_KEY"]).strip()
+            if "OPENROUTER_MODEL" in st.secrets:
+                openrouter_model = str(st.secrets["OPENROUTER_MODEL"]).strip()
     except Exception:
         pass
 
@@ -50,8 +69,7 @@ def _get_api_info():
         return "anthropic", anthropic_key, model
     elif openrouter_key or (anthropic_key and anthropic_key.startswith("sk-or-")):
         key = openrouter_key or anthropic_key
-        model = os.environ.get("OPENROUTER_MODEL", "openai/gpt-4o-mini")
-        return "openrouter", key, model
+        return "openrouter", key, openrouter_model
     elif anthropic_key:
         model = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-5")
         return "anthropic", anthropic_key, model
