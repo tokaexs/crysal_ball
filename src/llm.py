@@ -22,13 +22,28 @@ OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 
 def _get_api_info():
-    if ENV_PATH.exists():
-        load_dotenv(ENV_PATH, override=True)
-    else:
-        load_dotenv(find_dotenv(), override=True)
+    # 1. Check local .env files in project root, CWD, and parent paths
+    root_env = Path(__file__).resolve().parent.parent / ".env"
+    cwd_env = Path.cwd() / ".env"
+    if root_env.exists():
+        load_dotenv(root_env, override=True)
+    if cwd_env.exists() and cwd_env != root_env:
+        load_dotenv(cwd_env, override=True)
+    load_dotenv(find_dotenv(usecwd=True), override=True)
 
     anthropic_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     openrouter_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
+
+    # 2. Check Streamlit Secrets (for local Streamlit or Streamlit Community Cloud)
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets"):
+            if "OPENROUTER_API_KEY" in st.secrets and not openrouter_key:
+                openrouter_key = str(st.secrets["OPENROUTER_API_KEY"]).strip()
+            if "ANTHROPIC_API_KEY" in st.secrets and not anthropic_key:
+                anthropic_key = str(st.secrets["ANTHROPIC_API_KEY"]).strip()
+    except Exception:
+        pass
 
     if anthropic_key and anthropic_key.startswith("sk-ant-"):
         model = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-5")
