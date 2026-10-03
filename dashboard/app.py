@@ -308,15 +308,38 @@ with tab6:
         st.session_state.chat_history.append(("user", question))
         with st.chat_message("user"):
             st.write(question)
+        # Build segment summary
+        segment_stats = []
+        if "segment" in latest.columns and "churn_risk" in latest.columns:
+            for seg, grp in latest.groupby("segment"):
+                segment_stats.append({
+                    "segment": str(seg),
+                    "customer_count": int(len(grp)),
+                    "avg_monthly_churn_risk": f"{grp.churn_risk.mean():.1%}",
+                    "at_risk_count": int((grp.churn_risk > 0.05).sum()),
+                    "avg_revenue": f"₹{grp.base_monthly_price.mean():,.0f}" if "base_monthly_price" in grp else "N/A",
+                })
+
+        total_save = float(ranking["total_expected_save_inr"].sum()) if "total_expected_save_inr" in ranking else 0.0
+        total_cost = float(ranking["total_cost_inr"].sum()) if "total_cost_inr" in ranking else 0.0
+
         context = {
-            "trust_card": trust,
-            "action_ranking": ranking.to_dict("records"),
-            "n_customers": int(customers.customer_id.nunique()),
-            "avg_revenue_last_month": float(latest["base_monthly_price"].mean()),
-            "at_risk_count": int((latest.churn_risk > 0.05).sum()),
+            "portfolio_overview": {
+                "total_active_customers": int(customers.customer_id.nunique()),
+                "total_at_risk_customers": int((latest.churn_risk > 0.05).sum()),
+                "portfolio_avg_revenue": f"₹{float(latest['base_monthly_price'].mean()):,.0f}",
+                "segment_breakdown": segment_stats,
+            },
+            "prescriptive_economics": {
+                "total_expected_rupee_save": f"₹{total_save:,.0f}",
+                "total_budget_cost": f"₹{total_cost:,.0f}",
+                "net_benefit": f"₹{(total_save - total_cost):,.0f}",
+                "ranked_retention_actions": ranking.to_dict("records"),
+            },
+            "model_trust_card": trust,
         }
         with st.chat_message("assistant"):
-            with st.spinner("Thinking..."):
+            with st.spinner("Analyzing data..."):
                 answer = ask_copilot(question, context)
             st.write(answer)
         st.session_state.chat_history.append(("assistant", answer))

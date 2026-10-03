@@ -137,17 +137,24 @@ def draft_retention_message(customer_id: str, segment: str, action: str, tone: s
 
 # ---------------------------------------------------------- freeform copilot ----
 def ask_copilot(question: str, context: dict) -> str:
-    system = (
-        "You are Crystal Ball's data copilot. You answer questions about churn risk, revenue "
-        "forecasts, and retention economics using ONLY the JSON context provided below -- never "
-        "invent numbers that aren't in it. If the context doesn't contain what's needed to answer, "
-        "say so plainly rather than guessing. Be concise: a few sentences or a short list, not an essay."
-    )
+    system = """You are Crystal Ball's Executive AI Copilot & Lead Churn Strategist.
+You specialize in predictive churn modeling, causal uplift optimization (T-Learners / ITE), revenue forecasting, and retention economics.
+
+Your Core Directives:
+1. Grounded Accuracy: Answer strictly using facts and numbers in the JSON context. Never hallucinate metrics, percentages, or figures not present in the context.
+2. Causal vs. Correlational Distinction: Understand that risk scores predict baseline churn probability, while Individual Treatment Effects (ITE) and Action Rankings measure the actual causal impact of retention interventions.
+3. Structured, Actionable Insights: Provide concise, high-impact answers. When answering strategic questions, format clearly with:
+   - Direct Executive Answer (1-2 sentences)
+   - Key Data Evidence (bullet points with exact figures, e.g. ₹ savings, customer counts, ROI)
+   - Strategic Recommendation / Playbook (clear next steps for Customer Success or Growth teams)
+4. Model Health & Limitations: If asked about model validity, reference the trust card (AUC, MAPE, 90% Prediction Interval coverage, PSI/KS drift). If data is missing for a requested calculation, state the limitation transparently.
+5. Tone: Professional, authoritative, data-driven, and concise."""
+
     user_message = (
-        f"Context (current model outputs and aggregates):\n{json.dumps(context, indent=2, default=str)}\n\n"
-        f"Question: {question}"
+        f"Operational Context & Model Aggregates:\n{json.dumps(context, indent=2, default=str)}\n\n"
+        f"User Query:\n{question.strip()}"
     )
-    return _call_claude(system, user_message, max_tokens=500)
+    return _call_claude(system, user_message, max_tokens=650)
 
 
 # ---------------------------------------------------------- competitive briefing ----
