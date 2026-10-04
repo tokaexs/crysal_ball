@@ -26,3 +26,4 @@ __pycache__/
 # Duckdb temp / lock files (keep warehouse.duckdb if desired or ignore logs)
 *.duckdb.tmp
 *.duckdb.wal
+*corrupted*.duckdb
